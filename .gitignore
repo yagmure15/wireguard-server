@@ -11,3 +11,7 @@ adguard_conf/
 # Docker verileri
 .env
 
+adguard_work/
+adguard_conf/
+wg0.conf
+wg0.json
