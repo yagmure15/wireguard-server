@@ -1,0 +1,13 @@
+# WireGuard verileri ve anahtarları (GÜVENLİK İÇİN GİZLE)
+wg0.conf
+wg0.json
+lib/
+public/
+
+# AdGuard verileri (Loglar ve geçici dosyalar)
+adguard_work/
+adguard_conf/
+
+# Docker verileri
+.env
+

@@ -17,6 +17,7 @@ services:
     depends_on:
       - adguardhome
     environment:
+      - WG_PASSWORD=342835.#
       - WG_HOST=vpn.apprain.io
       - WG_PORT=443
       - WG_MTU=1420
