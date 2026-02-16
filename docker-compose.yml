@@ -1,6 +1,5 @@
 version: "3.8"
 services:
-  # --- 1. DOMAIN YONETICISI ---
   nginx-proxy:
     image: 'jc21/nginx-proxy-manager:latest'
     container_name: nginx-proxy
@@ -16,7 +15,6 @@ services:
       vpn_net:
         ipv4_address: 172.28.0.5
 
-  # --- 2. TAKIP SISTEMI ---
   uptime-kuma:
     image: louislam/uptime-kuma:1
     container_name: uptime-kuma
@@ -27,7 +25,6 @@ services:
       vpn_net:
         ipv4_address: 172.28.0.20
 
-  # --- 3. VPN ---
   wg-easy:
     image: ghcr.io/wg-easy/wg-easy
     container_name: wg-easy
@@ -38,8 +35,8 @@ services:
       - WG_MTU=1280
       - WG_ALLOWED_IPS=0.0.0.0/0
       - WG_PERSISTENT_KEEPALIVE=25
-      # --- KRITIK GUNCELLEME (/16 Subnet - 65k Kullanici) ---
-      - WG_DEFAULT_ADDRESS=10.8.x.x
+      # DÜZELTME: x.x yerine 10.8.0.1 yazıyoruz, /16 subneti genişliği sağlar.
+      - WG_DEFAULT_ADDRESS=10.8.0.1
     env_file:
       - .env
     volumes:
@@ -47,7 +44,6 @@ services:
     ports:
       - "51820:51820/udp"
       - "51821:51821/tcp"
-      - "443:51820/udp"
     restart: unless-stopped
     cap_add:
       - NET_ADMIN
@@ -59,7 +55,6 @@ services:
       vpn_net:
         ipv4_address: 172.28.0.2
 
-  # --- 4. REKLAM ENGELLEYICI ---
   adguard:
     image: adguard/adguardhome
     container_name: adguard
