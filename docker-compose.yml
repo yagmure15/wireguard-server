@@ -1,3 +1,4 @@
+version: "3.8"
 services:
   # --- 1. DOMAIN YONETICISI ---
   nginx-proxy:
@@ -30,19 +31,19 @@ services:
   wg-easy:
     image: ghcr.io/wg-easy/wg-easy
     container_name: wg-easy
-    # BURAYA DIKKAT: environment kisminda ARTIK PASSWORD_HASH YOK!
-    # env_file zaten o isi halledecek.
     environment:
-      - WG_HOST=52.57.113.222
+      - WG_HOST=${WG_HOST}
       - WG_PORT=51820
       - WG_DEFAULT_DNS=172.28.0.10
       - WG_MTU=1280
       - WG_ALLOWED_IPS=0.0.0.0/0
       - WG_PERSISTENT_KEEPALIVE=25
+      # --- KRITIK GUNCELLEME (/16 Subnet - 65k Kullanici) ---
+      - WG_DEFAULT_ADDRESS=10.8.x.x
     env_file:
       - .env
     volumes:
-      - ~/.wg-easy:/etc/wireguard
+      - ./wg-easy:/etc/wireguard
     ports:
       - "51820:51820/udp"
       - "51821:51821/tcp"
