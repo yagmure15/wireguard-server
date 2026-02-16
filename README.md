@@ -142,3 +142,19 @@ node sync.js
 - `wg0.conf` dosyasını paylaşmayın.
 - `.env` dosyasını Git'e eklemeyin.
 - Supabase Service Role Key yalnızca sunucuda kalmalıdır.
+
+
+
+## 🔐 Şifre ve Güvenlik Notları (v14+ Güncellemesi)
+`wg-easy` v14 ve üzeri sürümlerde `PASSWORD` yerine `PASSWORD_HASH` kullanılması zorunludur.
+
+### Kritik Bilgi: Docker Compose ve $ İşareti
+Docker Compose dosyalarında `$` işareti bir değişkeni temsil eder. BCrypt hash'leri çok sayıda `$` işareti içerir. Bu hash'in bozulmadan iletilmesi için her bir `$` işareti **çift** (`$$`) olarak yazılmalıdır.
+
+**Örnek Doğru Kullanım:**
+`PASSWORD_HASH: $$2b$$12$$R.S7/gI89nS...`
+
+### Yeni Şifre Hash'i Oluşturma (Python ile)
+Eğer şifreyi değiştirmek istersen şu komutu kullanabilirsin:
+```bash
+python3 -c 'import bcrypt; print(bcrypt.hashpw(b"YENI_SIFRE", bcrypt.gensalt()).decode().replace("$", "$$"))'
