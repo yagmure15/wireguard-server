@@ -1,14 +1,46 @@
 services:
+  # --- 1. DOMAIN YONETICISI ---
+  nginx-proxy:
+    image: 'jc21/nginx-proxy-manager:latest'
+    container_name: nginx-proxy
+    restart: unless-stopped
+    ports:
+      - '80:80'
+      - '81:81'
+      - '443:443'
+    volumes:
+      - ./npm_data:/data
+      - ./npm_letsencrypt:/etc/letsencrypt
+    networks:
+      vpn_net:
+        ipv4_address: 172.28.0.5
+
+  # --- 2. TAKIP SISTEMI ---
+  uptime-kuma:
+    image: louislam/uptime-kuma:1
+    container_name: uptime-kuma
+    restart: unless-stopped
+    volumes:
+      - ./uptime_kuma_data:/app/data
+    networks:
+      vpn_net:
+        ipv4_address: 172.28.0.20
+
+  # --- 3. VPN ---
   wg-easy:
-    image: weejewel/wg-easy
+    image: ghcr.io/wg-easy/wg-easy
     container_name: wg-easy
+    # BURAYA DIKKAT: environment kisminda ARTIK PASSWORD_HASH YOK!
+    # env_file zaten o isi halledecek.
     environment:
-      - WG_HOST=vpn.apprain.io
-      - PASSWORD=AppRain2026
-      - WG_PORT=443
+      - WG_HOST=52.57.113.222
+      - WG_PORT=51820
       - WG_DEFAULT_DNS=172.28.0.10
       - WG_MTU=1280
       - WG_ALLOWED_IPS=0.0.0.0/0
+      - WG_PERSISTENT_KEEPALIVE=25
+    env_file:
+      - .env
     volumes:
       - ~/.wg-easy:/etc/wireguard
     ports:
@@ -26,13 +58,13 @@ services:
       vpn_net:
         ipv4_address: 172.28.0.2
 
+  # --- 4. REKLAM ENGELLEYICI ---
   adguard:
     image: adguard/adguardhome
     container_name: adguard
     restart: unless-stopped
     ports:
       - "3000:3000/tcp"
-      - "80:80/tcp"
       - "53:53/udp"
       - "53:53/tcp"
     volumes:

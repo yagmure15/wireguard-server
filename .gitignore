@@ -1,17 +1,23 @@
-# WireGuard verileri ve anahtarları (GÜVENLİK İÇİN GİZLE)
-wg0.conf
-wg0.json
-lib/
-public/
-
-# AdGuard verileri (Loglar ve geçici dosyalar)
-adguard_work/
-adguard_conf/
-
-# Docker verileri
+# --- GİZLİ ŞİFRELER ---
 .env
 
-adguard_work/
-adguard_conf/
+# --- WIREGUARD ÖZEL DOSYALARI (KRİTİK) ---
 wg0.conf
 wg0.json
+config.json
+wireguard/
+
+# --- DOCKER DATA KLASÖRLERİ (Volume) ---
+adguard_conf/
+adguard_work/
+npm_data/
+npm_letsencrypt/
+uptime_kuma_data/
+
+# --- GEREKSİZ SİSTEM DOSYALARI ---
+node_modules/
+vpn_env/
+__pycache__/
+*.log
+.DS_Store
+venv/
